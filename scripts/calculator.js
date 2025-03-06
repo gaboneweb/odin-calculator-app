@@ -1,11 +1,9 @@
 const buttons = document.querySelector('.buttons');
-const result = document.querySelector('.result');
 const expression = document.querySelector('.expression');
 
 
 function clear(){
     expression.textContent = '';
-    result.textContent = '';
 }
 
 
