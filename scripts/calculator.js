@@ -20,6 +20,13 @@ function subtract(firstNumber, secondNumber){
     return firstNumber - secondNumber;
 }
 
+function isEmpty(value){
+    if(isNaN(value) || value === ''){
+        return true;
+    }
+    return false;
+}
+
 
 
 function multiply(firstNumber, secondNumber){
@@ -52,6 +59,9 @@ function evaluateExpression(num1, num2 , operator){
         case '+':
             return add(num1,num2);
         case '÷':
+            if(num2 === 0){
+                return 'Error';
+            }
             return divide(num1, num2);
         case '-':
             return subtract(num1,num2);
@@ -89,14 +99,17 @@ buttons.addEventListener('click', (event) => {
         case '=':
             secondValue = expression.textContent;
             decimal.disabled = false;
-            expression.textContent = evaluateExpression(parseNumber(firstValue),parseNumber(secondValue), operator);
-            firstValue = expression.textContent;
+            if(isEmpty(firstValue) || isEmpty(secondValue)){
+                expression.textContent = 'Error';
+            }else{
+                expression.textContent = evaluateExpression(parseNumber(firstValue),parseNumber(secondValue), operator);
+                firstValue = expression.textContent;
+            }
             break;
         case 'backspace':
             backSpace();
             break;
         case '.':
-            console.log(expression.textContent);
             if(expression.textContent !== ''){
                 decimal.disabled = true;
                 addToExpression(event.target.id);
