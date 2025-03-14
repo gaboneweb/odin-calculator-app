@@ -1,6 +1,8 @@
 const buttons = document.querySelector('.buttons');
 const expression = document.querySelector('.expression');
 const decimal = document.getElementById(".");
+const percent = document.querySelector('.percent');
+
 
 //Initialise the values
 let firstValue = '';
@@ -45,6 +47,7 @@ function clear(){
     secondValue = '';
     operator = '';
     decimal.disabled = false;
+    percent.disabled = false;
 }
 
 
@@ -83,10 +86,18 @@ function parseNumber(num){
 
 function backSpace(){
     let currentValue = expression.textContent;
-    if(currentValue !== ''  && currentValue[currentValue.length- 1] === '.'){
-        decimal.disabled = false;
+    if(currentValue !== ''){
+        if(currentValue[currentValue.length- 1] === '.'){
+            decimal.disabled = false;
+        }
+
+        if(currentValue[currentValue.length- 1] === '%'){
+            percent.disabled = false;
+        }
+
+        expression.textContent = expression.textContent.slice(0, -1);
     }
-    expression.textContent = expression.textContent.slice(0, -1);
+    
 }
 
 
@@ -99,6 +110,7 @@ buttons.addEventListener('click', (event) => {
         case '=':
             secondValue = expression.textContent;
             decimal.disabled = false;
+            percent.disabled = false;
             if(isEmpty(firstValue) || isEmpty(secondValue)){
                 expression.textContent = 'Error';
             }else{
@@ -115,17 +127,15 @@ buttons.addEventListener('click', (event) => {
                 addToExpression(event.target.id);
             }
             break;
-        case '%':
-            addToExpression(event.target.id);
-            expression.textContent = parseNumber(expression.textContent);
-            break;
         default:
             if(event.target.className.includes('number')){
                 addToExpression(event.target.id);
-                
+            }else if(event.target.className.includes('percent')){
+                addToExpression(event.target.id);
+                percent.disabled = true;
             }else{
                 operator = event.target.id;
-                firstValue = expression.textContent;
+                firstValue = parseNumber(expression.textContent).toString();
                 decimal.disabled = false;
                 expression.textContent = '';
             } 
